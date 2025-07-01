@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Entregas Realizadas</title>
+    
+    <script>
+        (function() {
+
+            var originalConsoleError = console.error;
+            var originalConsoleWarn = console.warn;
+            var originalConsoleLog = console.log;
+            
+
+            var targetPattern = "[Violation] Potential permissions policy violation:";
+
+            function filterViolationMessages(originalFn, args) {
+
+                if (!args || args.length === 0) {
+                    return originalFn.apply(console, args);
+                }
+                
+
+                var message = args[0];
+                
+      
+                if (typeof message !== 'string') {
+                    return originalFn.apply(console, args);
+                }
+              
+                if (message.indexOf(targetPattern) === 0) {
+                   
+                    return;
+                }
+                
+               
+                return originalFn.apply(console, args);
+            }
+            
+            
+            console.error = function() {
+                return filterViolationMessages(originalConsoleError, arguments);
+            };
+            
+            console.warn = function() {
+                return filterViolationMessages(originalConsoleWarn, arguments);
+            };
+            
+            console.log = function() {
+                return filterViolationMessages(originalConsoleLog, arguments);
+            };
+        })();
+    </script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .responsive-iframe {
+            flex: 1;
+            width: 100%;
+            height: 100%;
+            border: none;
+            background-color: transparent;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <iframe 
+            id="appFrame"
+            class="responsive-iframe"
+            src="https://script.google.com/macros/s/AKfycbxpIANMd6OR9fGY1K3hj8LbTisFh8rQLFlFdtE01decVnixQ1eLTtJxJxkx1Q_VOzo/exec"
+            frameborder="0"
+            allowfullscreen="true"
+            sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"
+            scrolling="no"
+        ></iframe>
+    </div>
+</body>
+</html>
